@@ -25,4 +25,12 @@ print(matriz_original)
 print("\nMatriz Procesada (Ajustada):")
 print(matriz_procesada)
 
+# ==========================================
+# LABORATORIO FINAL: PROGRAMANDO UN KERNEL
+# (Convolución / Filtro 3x3)
+# ==========================================
+
+print("\n" + "="*40)
+print("=== TALLER DE LABORATORIO FINAL ===")
+
 
