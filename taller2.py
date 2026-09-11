@@ -2,47 +2,52 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
+# ==========================================
+# TALLER DE LABORATORIO 1: TRANSFORMACIÓN
+# ==========================================
+
 # 1. Crear el píxel BGR completamente amarillo (Azul=0, Verde=255, Rojo=255)
 pixel = np.array([0, 255, 255], dtype=np.float32)
 
-# 2. Pesos ponderados para el orden BGR
+# 2. Pesos ponderados para el orden BGR (0.114*B + 0.587*G + 0.299*R)
 pesos = np.array([0.114, 0.587, 0.299])
 
 # Producto punto entre el píxel y los pesos
 gris_calculado = np.dot(pixel, pesos)
 
-# 3. Imprimir el resultado
-print(f"El valor de intensidad en gris para amarillo puro es: {gris_calculado:.2f}")
-# Resultado aproximado: 225.93 (es decir, un tono de gris muy claro/brillante)
+# 3. Imprimir el resultado manual
+print(f"1. Valor de intensidad en gris para amarillo puro: {gris_calculado:.2f}")
 
 # 4. Verificación con una imagen real descargada usando OpenCV
-imagen = cv2.imread('/workspaces/IA-2/imagenPrueba/image.png')
+ruta_imagen = '/workspaces/IA-2/imagenPrueba/image.png'
+imagen = cv2.imread(ruta_imagen)
 
 if imagen is not None:
-    # Conversión mediante función optimizada de OpenCV
+    # Conversión mediante la función optimizada de OpenCV
     img_gris = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
     
-    print("Conversión realizada con éxito en OpenCV.")
-    print("Dimensiones de imagen original:", imagen.shape)
-    print("Dimensiones de imagen en gris:", img_gris.shape)
+    print("\n2. Conversión a grises en OpenCV realizada con éxito.")
+    print("   - Dimensiones de imagen original (Alto, Ancho, Canales):", imagen.shape)
+    print("   - Dimensiones de imagen en gris (Alto, Ancho):", img_gris.shape)
+    
+    # En Codespaces guardamos la imagen convertida para verla en el explorador
+    cv2.imwrite('imagen_gris_resultado.png', img_gris)
+    print("   - Se guardó 'imagen_gris_resultado.png' en tus archivos.")
 else:
-    print("Por favor, asegúrate de colocar la ruta de una imagen válida.")
+    print("\nError: No se encontró la imagen en la ruta especificada.")
 
-#Segundo ejercicio
+# ==========================================
+# TALLER DE LABORATORIO 2: ANÁLISIS ESTADÍSTICO
+# ==========================================
 
-# 1. Cargar la imagen en la carpeta
-imagen = cv2.imread('/workspaces/IA-2/imagenPrueba/image.png')  # Asegúrate de usar el nombre exacto de tu archivo
-
-if imagen is None:
-    print("Error: No se encontró la imagen. Asegúrate de haberla subido a la carpeta.")
-else:
-    # 2. Configurar colores para los canales en orden BGR (Azul, Verde, Rojo)
+if imagen is not None:
+    # Configurar colores y etiquetas para cada canal BGR
     colores = ('b', 'g', 'r')
     etiquetas = ('Canal Azul', 'Canal Verde', 'Canal Rojo')
     
     plt.figure(figsize=(10, 5))
     
-    # 3. Calcular y graficar el histograma de cada canal
+    # Calcular y graficar el histograma de cada canal
     for i, col in enumerate(colores):
         hist = cv2.calcHist([imagen], [i], None, [256], [0, 256])
         plt.plot(hist, color=col, label=etiquetas[i])
@@ -54,6 +59,7 @@ else:
     plt.legend()
     plt.grid(True)
     
-    # EN LUGAR DE plt.show(), GUARDAMOS LA IMAGEN GENERADA:
+    # Guardar la gráfica como imagen para poder abrirla desde VS Code
     plt.savefig('histograma_resultado.png')
-    print("¡Proceso completado! La gráfica se guardó como 'histograma_resultado.png' en tu explorador de archivos.")
+    print("\n3. ¡Proceso completado!")
+    print("   - La gráfica del histograma se guardó como 'histograma_resultado.png'.")
